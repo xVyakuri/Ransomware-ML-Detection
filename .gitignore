@@ -1,0 +1,5 @@
+# Ignore data & results directory contents, python virtual environments, and python cache directories
+data/*
+results/*
+.venv/
+__pycache__/

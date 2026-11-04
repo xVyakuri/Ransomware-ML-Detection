@@ -1,0 +1,1 @@
+# Verify raw snapshot exists and write/verify SHA-256 manifest
