@@ -1,0 +1,22 @@
+path,bytes,sha256,source,retrieved_at
+data/raw/MLRan_full_dataset/1_api_dataset.parquet,327751,4292fa96bf64ce0083703b957f803a2bf5a9072409f58477ee7f8a3834f351cb,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/1_api_feature_names_dic.json,10782,7bd85a91217157434022b1912fad7d3cdb191820b4836aa3a8c7bdd36c64a83a,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/2_reg_dataset.parquet,295530667,b1d5bf91855472dba70d917b94a61a2879079a9e087857903c855aa44f385bc7,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/2_reg_feature_names_dic.json,77464309,273c2e5cfd788a0f55251d68b696b3647cd3e7df95815ca07dab5671757732f3,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/3_file_dataset.parquet,1166913494,d60041d7128307f2f80d23fbb415d9cdf1675aadfcca7d6095f995ff70ba8a3f,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/3_file_feature_names_dic.json,237763082,17ac1de1612ae097b1e198cb5139281314fdcbc19f20311a648215a03e9742d6,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/4_dir_dataset.parquet,89655829,934c9fdf2a4515645d42357b05b297ddf4e765f3b91baa6adb72ec1e17fd6ebb,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/4_dir_feature_names_dic.json,19828583,a7b0a20d6ed2baf4cb8479e0170a9b5936003d1ccabc5f3fd67811de5388d531,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/5_str_dataset.parquet,2045401871,51c27b1d1b9b5edaeb015e2f039bc2ab08969ebcf721b61170290188123cd3d3,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/5_str_feature_names_dic.json,151509850,72a7f5bda3af822abdef8e5b21f79fe0c9872cca0682854562b8918e5eb3d925,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/6_net_dataset.parquet,2724329,e2fb3504526ca93109dc8d05beeb2dfdc6f23067cb70675cc5dca7f0aa8f071f,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/6_net_feature_names_dic.json,260876,14f2727f1fa6c3c64cb016da7c32c61ccb1e558cc4bd19e050914ba3fd6fdf32,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/7_sys_dataset.parquet,9731355,4ca0f43eb155ae2dcc91e9f5e949857ee7e180fef250fba1df9ec664104e6afc,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/7_sys_feature_names_dic.json,1946595,05f21dfa47bd815c4c30649a629c25bfa617cc34f8c7dbafe44f874ab1e9c916,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/8_drop_dataset.parquet,29053473,95dedfccfd9e5cc6dc1e8b9e20bf2c19f1630dd0e46171d9313d798b4a32ab97,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/8_drop_feature_names_dic.json,4613648,ab3cf012bc4dc2cbff9a07cd76ad34aed12afa780008eb4213fc94cf469cb47b,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/9_sig_dataset.parquet,179429,a511862a71d986a7cb808a15734b174ebf145d35b0d432201c78a11bcff43c3a,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/MLRan_full_dataset/9_sig_feature_names_dic.json,9378,f925c6dfaf0c8717c4ede1463a0a9c07623d7df389f1928ac83b6fdc37b5dc5d,https://zenodo.org/records/23403681 (MLRan_full_dataset.zip),2026-11-04T16:39:58+00:00
+data/raw/metadata/mlran_dataset_metadata.csv,1287438,1cdb3180446d20dd0cc7fb24ae973fed281a37eb020b2191ff7566230035d3de,github.com/faithfulco/mlran@273fcac5af82ad60d60fa2bff427ebcb1db61273,2026-11-04T16:39:58+00:00
+data/raw/metadata/ransomware_samples_families_description.csv,14462,8b79c2fb890843a3fa6d18c8b2957d763abdcb9d8f76d9fb292734144f0609b0,github.com/faithfulco/mlran@273fcac5af82ad60d60fa2bff427ebcb1db61273,2026-11-04T16:39:58+00:00
+data/raw/metadata/goodware_samples_description.csv,714921,198a3bdb69d9cc8552d8295f1e86048959cfe05dafff045cc94cdd21cb4d23d1,github.com/faithfulco/mlran@273fcac5af82ad60d60fa2bff427ebcb1db61273,2026-11-04T16:39:58+00:00

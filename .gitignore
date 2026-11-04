@@ -1,0 +1,12 @@
+# Raw dataset and generated artifacts (large, never committed)
+MLRan_full_dataset/
+data/
+*.npz
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
