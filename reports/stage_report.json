@@ -1,0 +1,579 @@
+{
+  "snapshot": {
+    "completed_at": "2026-11-04T16:40:00+00:00",
+    "files": 21,
+    "total_bytes": 4134942122
+  },
+  "labels": {
+    "completed_at": "2026-11-04T17:32:05+00:00",
+    "metadata_rows_in": 4880,
+    "labels_out": 4880,
+    "ransomware": 2330,
+    "goodware": 2550,
+    "ransomware_share": 0.4775,
+    "families": 64,
+    "type_counts": {
+      "crypto": 1140,
+      "raas": 468,
+      "modern": 449,
+      "locker": 273
+    },
+    "family_size": {
+      "min": 5.0,
+      "50%": 28.0,
+      "max": 134.0
+    },
+    "missing_first_seen_year": 0,
+    "year_columns_disagree": 3266,
+    "first_seen_year_median": {
+      "ransomware": 2020.0,
+      "goodware": 2016.0
+    },
+    "duplicate_sha256_rows": 8,
+    "duplicate_sha256_pairs": [
+      [
+        10920,
+        11895
+      ],
+      [
+        10854,
+        11893
+      ],
+      [
+        10917,
+        11977
+      ],
+      [
+        10772,
+        11894
+      ]
+    ]
+  },
+  "convert": {
+    "completed_at": "2026-11-04T16:58:46+00:00",
+    "samples": 4880,
+    "features": 6484506,
+    "nonzero_cells": 17047798,
+    "failed_runs": {
+      "ransomware": 196,
+      "goodware": 186
+    },
+    "exact_duplicate_feature_rows": 79,
+    "exact_duplicate_feature_groups": 33,
+    "exact_duplicate_rate": 0.01619,
+    "sample_id_normalisation": {
+      "id_token_features": 45417,
+      "own_id_cells_moved": 38337,
+      "sample_token_features_created": 16580,
+      "samples_affected": 3645
+    },
+    "tables": {
+      "1_api": {
+        "rows_in": 4880,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [],
+        "features": 313,
+        "nonzero_cells": 314067,
+        "density": 0.2056166,
+        "features_in_one_sample": 7,
+        "features_in_no_kept_sample": 0,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 0,
+        "seconds": 0.0
+      },
+      "2_reg": {
+        "rows_in": 4880,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [],
+        "features": 525505,
+        "nonzero_cells": 4885704,
+        "density": 0.0019052,
+        "features_in_one_sample": 449814,
+        "features_in_no_kept_sample": 4,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 12806,
+        "seconds": 15.5
+      },
+      "3_file": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 2078287,
+        "nonzero_cells": 4567493,
+        "density": 0.0004504,
+        "features_in_one_sample": 1993892,
+        "features_in_no_kept_sample": 100,
+        "malformed_names": 0,
+        "names_sanitized": 1,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 22893,
+        "seconds": 63.5
+      },
+      "4_dir": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 158123,
+        "nonzero_cells": 668797,
+        "density": 0.0008667,
+        "features_in_one_sample": 113446,
+        "features_in_no_kept_sample": 10,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 6124,
+        "seconds": 4.4
+      },
+      "5_str": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 3632119,
+        "nonzero_cells": 6151940,
+        "density": 0.0003471,
+        "features_in_one_sample": 3330987,
+        "features_in_no_kept_sample": 2604,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 11,
+        "id_token_features": 1351,
+        "seconds": 110.0
+      },
+      "6_net": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 4814,
+        "nonzero_cells": 8493,
+        "density": 0.0003615,
+        "features_in_one_sample": 4260,
+        "features_in_no_kept_sample": 0,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 0,
+        "seconds": 0.2
+      },
+      "7_sys": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 16911,
+        "nonzero_cells": 301136,
+        "density": 0.003649,
+        "features_in_one_sample": 14056,
+        "features_in_no_kept_sample": 1,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 2180,
+        "seconds": 0.5
+      },
+      "8_drop": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 51651,
+        "nonzero_cells": 104658,
+        "density": 0.0004152,
+        "features_in_one_sample": 45616,
+        "features_in_no_kept_sample": 0,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 63,
+        "seconds": 1.5
+      },
+      "9_sig": {
+        "rows_in": 4884,
+        "rows_out": 4880,
+        "unlabeled_ids_dropped": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "features": 203,
+        "nonzero_cells": 45510,
+        "density": 0.04594,
+        "features_in_one_sample": 25,
+        "features_in_no_kept_sample": 0,
+        "malformed_names": 0,
+        "names_sanitized": 0,
+        "dictionary_entries_unused": 0,
+        "leak_hash_features": 0,
+        "id_token_features": 0,
+        "seconds": 0.0
+      }
+    }
+  },
+  "aggregates": {
+    "completed_at": "2026-11-04T16:50:34+00:00",
+    "rows": 4880,
+    "columns": [
+      "api_n",
+      "reg_n",
+      "file_n",
+      "dir_n",
+      "str_n",
+      "net_n",
+      "sys_n",
+      "drop_n",
+      "sig_n",
+      "directory_created_n",
+      "directory_enumerated_n",
+      "drop_extension_n",
+      "drop_type_n",
+      "file_created_n",
+      "file_deleted_n",
+      "file_exists_n",
+      "file_failed_n",
+      "file_opened_n",
+      "file_read_n",
+      "file_recreated_n",
+      "file_written_n",
+      "network_connects_host_n",
+      "network_connects_ip_n",
+      "network_resolves_host_n",
+      "reg_deleted_n",
+      "reg_opened_n",
+      "reg_read_n",
+      "reg_written_n",
+      "system_command_line_n",
+      "system_dll_loaded_n",
+      "system_guid_n",
+      "system_mutex_n",
+      "file_written_distinct_dirs",
+      "file_written_distinct_ext",
+      "file_created_distinct_dirs",
+      "file_created_distinct_ext",
+      "file_deleted_distinct_dirs",
+      "file_deleted_distinct_ext",
+      "file_write_read_ratio",
+      "file_delete_create_ratio",
+      "file_written_per_dir"
+    ],
+    "null_cells": 0
+  },
+  "split": {
+    "completed_at": "2026-11-04T16:58:52+00:00",
+    "near_dup_threshold": 0.9,
+    "near_dup_pairs": 3022,
+    "near_dup_pairs_cross_label": 0,
+    "near_dup_pairs_cross_family": 388,
+    "excluded_failed_runs": 382,
+    "groups": 2358,
+    "group_size": {
+      "max": 616,
+      "singletons": 2273
+    },
+    "groups_mixing_labels": 0,
+    "merged_family_groups": [
+      "fam:critroni+cryptolocker+cryptowall+delshad+locker+magniber+matsnu+reveton+revil+trojan-ransom+vhd",
+      "fam:gimemo+mbrlock",
+      "fam:kollah+kovter",
+      "fam:nefilim+nemty"
+    ],
+    "holdout_seed": 520,
+    "holdout_groups": [
+      "fam:8base",
+      "fam:avoslocker",
+      "fam:bianlian",
+      "fam:dharma",
+      "fam:locky",
+      "fam:philadelphia",
+      "fam:royal",
+      "fam:shade"
+    ],
+    "holdout_families": [
+      "8base",
+      "avoslocker",
+      "bianlian",
+      "dharma",
+      "locky",
+      "philadelphia",
+      "royal",
+      "shade"
+    ],
+    "holdout_types": [
+      "crypto",
+      "modern",
+      "raas"
+    ],
+    "holdout_samples": 188,
+    "seeds": {
+      "0": {
+        "counts": {
+          "excluded": {
+            "goodware": 186,
+            "ransomware": 196
+          },
+          "holdout": {
+            "goodware": 0,
+            "ransomware": 188
+          },
+          "test": {
+            "goodware": 354,
+            "ransomware": 240
+          },
+          "train": {
+            "goodware": 1655,
+            "ransomware": 1428
+          },
+          "val": {
+            "goodware": 355,
+            "ransomware": 278
+          }
+        },
+        "fraction": {
+          "train": 0.7153,
+          "val": 0.1469,
+          "test": 0.1378
+        },
+        "ransomware_families_per_split": {
+          "test": 9,
+          "train": 39,
+          "val": 8
+        }
+      },
+      "1": {
+        "counts": {
+          "excluded": {
+            "goodware": 186,
+            "ransomware": 196
+          },
+          "holdout": {
+            "goodware": 0,
+            "ransomware": 188
+          },
+          "test": {
+            "goodware": 354,
+            "ransomware": 323
+          },
+          "train": {
+            "goodware": 1655,
+            "ransomware": 1349
+          },
+          "val": {
+            "goodware": 355,
+            "ransomware": 274
+          }
+        },
+        "fraction": {
+          "train": 0.697,
+          "test": 0.1571,
+          "val": 0.1459
+        },
+        "ransomware_families_per_split": {
+          "test": 7,
+          "train": 37,
+          "val": 12
+        }
+      },
+      "2": {
+        "counts": {
+          "excluded": {
+            "goodware": 186,
+            "ransomware": 196
+          },
+          "holdout": {
+            "goodware": 0,
+            "ransomware": 188
+          },
+          "test": {
+            "goodware": 354,
+            "ransomware": 323
+          },
+          "train": {
+            "goodware": 1655,
+            "ransomware": 1349
+          },
+          "val": {
+            "goodware": 355,
+            "ransomware": 274
+          }
+        },
+        "fraction": {
+          "train": 0.697,
+          "test": 0.1571,
+          "val": 0.1459
+        },
+        "ransomware_families_per_split": {
+          "test": 6,
+          "train": 44,
+          "val": 6
+        }
+      },
+      "3": {
+        "counts": {
+          "excluded": {
+            "goodware": 186,
+            "ransomware": 196
+          },
+          "holdout": {
+            "goodware": 0,
+            "ransomware": 188
+          },
+          "test": {
+            "goodware": 354,
+            "ransomware": 275
+          },
+          "train": {
+            "goodware": 1655,
+            "ransomware": 1395
+          },
+          "val": {
+            "goodware": 355,
+            "ransomware": 276
+          }
+        },
+        "fraction": {
+          "train": 0.7077,
+          "val": 0.1464,
+          "test": 0.1459
+        },
+        "ransomware_families_per_split": {
+          "test": 9,
+          "train": 40,
+          "val": 7
+        }
+      },
+      "4": {
+        "counts": {
+          "excluded": {
+            "goodware": 186,
+            "ransomware": 196
+          },
+          "holdout": {
+            "goodware": 0,
+            "ransomware": 188
+          },
+          "test": {
+            "goodware": 354,
+            "ransomware": 246
+          },
+          "train": {
+            "goodware": 1655,
+            "ransomware": 1417
+          },
+          "val": {
+            "goodware": 355,
+            "ransomware": 283
+          }
+        },
+        "fraction": {
+          "train": 0.7128,
+          "val": 0.148,
+          "test": 0.1392
+        },
+        "ransomware_families_per_split": {
+          "test": 7,
+          "train": 38,
+          "val": 11
+        }
+      }
+    }
+  },
+  "leakage": {
+    "completed_at": "2026-11-04T17:32:07+00:00",
+    "passed": true,
+    "checks": {
+      "labels_traceable": {
+        "passed": true,
+        "detail": "missing=0, label mismatches=0, rows=4880"
+      },
+      "groups_disjoint": {
+        "passed": true,
+        "detail": "every group in one split"
+      },
+      "sha256_disjoint": {
+        "passed": true,
+        "detail": "no binary in two splits"
+      },
+      "near_dups_disjoint": {
+        "passed": true,
+        "detail": "3022 near-dup pairs, none split apart"
+      },
+      "holdout_unseen": {
+        "passed": true,
+        "detail": "8 families, 3 types, 188 samples; families seen in train/val/test: none; mislabelled: none"
+      },
+      "failed_runs_excluded": {
+        "passed": true,
+        "detail": "382 failed runs excluded"
+      },
+      "deterministic": {
+        "passed": true,
+        "detail": "same seed, same split"
+      },
+      "split_fractions": {
+        "passed": true,
+        "detail": "within \u00b10.05 of 70/15/15"
+      },
+      "vocab_fit_on_train": {
+        "passed": true,
+        "detail": "132442 features kept (expected 132442) from train counts only"
+      },
+      "no_own_sample_id_features": {
+        "passed": true,
+        "detail": "own IDs replaced by <SAMPLE>"
+      },
+      "no_author_preselected_features": {
+        "passed": true,
+        "detail": "authors' MI/RFE/X_train files never read"
+      }
+    }
+  },
+  "audit": {
+    "completed_at": "2026-11-04T16:52:52+00:00",
+    "passed": true,
+    "samples": 20,
+    "feature_cells_checked": 40,
+    "feature_cells_failed": 0,
+    "label_rows_failed": 0,
+    "sample_token_cells_checked": 16,
+    "sample_token_cells_failed": 0
+  }
+}

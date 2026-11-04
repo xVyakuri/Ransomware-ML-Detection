@@ -17,3 +17,8 @@ results/tables/*
 
 .venv/
 __pycache__/
+# Parser outputs and tool caches
+*.npz
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
