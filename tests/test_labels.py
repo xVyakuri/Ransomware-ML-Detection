@@ -4,15 +4,15 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from mlran_parser import leakage
-from mlran_parser.config import Paths
-from mlran_parser.labels import LabelError, build_labels, read_labels
+from src import quality_checks
+from src.build_labels import LabelError, build_labels, read_labels
+from src.common import Paths
 
 from .conftest import REAL, build_fixture, real_data
 
 
 def test_every_execution_has_a_label(built: Paths):
-    c = leakage.check_labels_traceable(pd.read_csv(built.split_manifest), read_labels(built))
+    c = quality_checks.check_labels_traceable(pd.read_csv(built.split_manifest), read_labels(built))
     assert c.passed, c.detail
 
 
@@ -33,5 +33,5 @@ def test_labels_reject_id_range_mismatch(tmp_path):
 
 @real_data
 def test_real_labels_traceable():
-    c = leakage.check_labels_traceable(pd.read_csv(REAL.split_manifest), read_labels(REAL))
+    c = quality_checks.check_labels_traceable(pd.read_csv(REAL.split_manifest), read_labels(REAL))
     assert c.passed, c.detail

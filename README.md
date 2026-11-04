@@ -162,34 +162,34 @@ Onwuegbuche, Olaoluwa, Jurcut, Pasquale, Updated October 2026, Accessed October 
 Onwuegbuche, Olaoluwa, Jurcut, Pasquale, Updated October 2026, Accessed October 2026, “A behavioural dataset for ransomware analysis and detection. Journal of Network and Computer Applications, 104475.”, https://zenodo.org/records/23403681
 
 ## Parser (implemented)
-Stages 1-6 and 10 of the pipeline are implemented in the `mlran_parser` package (`src/mlran_parser/`). The outline scripts in `src/` call into it. Data contract, design decisions and known limitations are in [docs/PARSER.md](docs/PARSER.md).
+Pipeline steps 1-6, 8 (aggregate features) and 10 are implemented in the outline modules in `src/`. Data contract, design decisions and known limitations are in [docs/PARSER.md](docs/PARSER.md).
 
 ### Setup
 1. Install [uv](https://docs.astral.sh/uv/).
 2. Download `MLRan_full_dataset.zip` from [Zenodo record 23403681](https://zenodo.org/records/23403681) and unzip it to `data/raw/MLRan_full_dataset/`.
-3. Create the environment with `uv sync --extra dev`.
+3. Create the environment with `make setup` (runs `uv sync --extra dev`).
 
 ### Build the data
 ```bash
-uv run mlran all
+make data
 ```
 
-| Stage | Outline script | Output |
+| Make target | Module | Output |
 |---|---|---|
 | `snapshot` | `src/check_raw.py` | Pinned metadata in `data/raw/metadata/`, SHA-256 manifest in `reports/raw_manifest.csv` |
-| `convert` | `src/parse_raw.py`, `src/build_labels.py` | `data/processed/X.npz`, `samples.parquet`, `feature_catalog.parquet`, `labels.csv` |
-| `aggregates` | `src/features.py` | `data/processed/aggregates.parquet` |
-| `split` | `src/make_splits.py`, `src/make_holdout.py` | `data/processed/split_manifest.csv`, `near_dup_pairs.parquet` |
-| `leakcheck` | `src/quality_checks.py` | 11 leakage checks; non-zero exit code on failure |
-| `audit` | `src/spot_check.py` | `reports/audit_trace.md` |
+| `parse` | `src/parse_raw.py` (labels from `src/build_labels.py`) | `data/processed/X.npz`, `samples.parquet`, `feature_catalog.parquet`, `labels.csv` |
+| `features` | `src/features.py` | `data/processed/aggregates.parquet` |
+| `splits` | `src/make_splits.py` (holdout from `src/make_holdout.py`) | `data/processed/split_manifest.csv`, `near_dup_pairs.parquet` |
+| `quality` | `src/quality_checks.py` | Quality summary and 11 leakage checks; non-zero exit code on failure |
+| `spot-check` | `src/spot_check.py` | `reports/audit_trace.md` |
 
-Each outline script runs its stage, for example `uv run python src/parse_raw.py`. Every stage writes its counts to `reports/stage_report.json`.
+Run one step with `make <target>` or `uv run python -m src.<module>` from the repository root. `make verify` re-hashes the raw files and `make holdout` reports the held-out families. Shared paths, seeds and constants are in `src/common.py`. Every step writes its counts to `reports/stage_report.json`.
 
-A full build takes about 6 minutes. `convert` peaks at about 15 GB RAM, because the Parquet footer of the 3.6M-column strings table alone takes about 12 GB. Run the build once on a machine with 16 GB or more and share `data/processed/` (160 MB). Loading a split peaks at about 1.8 GB.
+A full build takes about 6 minutes. `parse` peaks at about 15 GB RAM, because the Parquet footer of the 3.6M-column strings table alone takes about 12 GB. Run the build once on a machine with 16 GB or more and share `data/processed/` (160 MB). Loading a split peaks at about 1.8 GB.
 
 ### Use the data
 ```python
-from mlran_parser.loader import load
+from src.features import load
 
 b = load(seed=0, min_df=5)          # seeds 0-4 for the variability test
 b.train.X, b.train.y                # scipy CSR, y: 1 = ransomware, 0 = goodware
@@ -205,5 +205,5 @@ For the anomaly detectors, train on benign rows only: `b.train.X[b.train.y == 0]
 
 ### Test
 ```bash
-uv run pytest
+make test
 ```

@@ -1,12 +1,176 @@
 # Verify raw snapshot exists and write/verify SHA-256 manifest
-"""Pipeline step 1. Implementation: mlran_parser.snapshot.
+"""Immutable raw snapshot: fetch pinned metadata, hash every raw file, verify against manifest.
 
-Run: uv run python src/check_raw.py  (same as `uv run mlran snapshot`)
+The manifest (reports/raw_manifest.csv) is committed. Every later stage calls `verify` first,
+so a changed or corrupted raw file stops the pipeline instead of silently changing results.
 """
 
-import sys
+from __future__ import annotations
 
-from mlran_parser.cli import main
+import argparse
+import csv
+import hashlib
+import http.client
+import logging
+import sys
+import urllib.request
+from datetime import UTC, datetime
+from pathlib import Path
+
+from src.common import (
+    METADATA_FILES,
+    MLRAN_COMMIT,
+    MLRAN_RAW_BASE,
+    TABLES,
+    Paths,
+    PipelineError,
+    run_stage,
+    write_stage,
+)
+
+log = logging.getLogger(__name__)
+
+ZENODO_RECORD = "https://zenodo.org/records/23403681"
+
+FIELDS = ["path", "bytes", "sha256", "source", "retrieved_at"]
+
+
+class SnapshotError(PipelineError):
+    pass
+
+
+def sha256_file(path: Path, chunk: int = 1 << 22) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        while block := f.read(chunk):
+            h.update(block)
+    return h.hexdigest()
+
+
+def expected_raw_files(paths: Paths) -> list[Path]:
+    files: list[Path] = []
+    for t in TABLES:
+        files.append(paths.raw_dataset / f"{t}_dataset.parquet")
+        files.append(paths.raw_dataset / f"{t}_feature_names_dic.json")
+    files.extend(paths.metadata_dir / name for name in METADATA_FILES)
+    return files
+
+
+def fetch_metadata(paths: Paths) -> None:
+    """Download the pinned metadata CSVs if they are not already present."""
+    paths.metadata_dir.mkdir(parents=True, exist_ok=True)
+    for name, rel in METADATA_FILES.items():
+        dest = paths.metadata_dir / name
+        if dest.exists():
+            continue
+        url = f"{MLRAN_RAW_BASE}/{rel}"
+        log.info("downloading %s", url)
+        tmp = dest.with_suffix(dest.suffix + ".part")
+        for attempt in range(1, 4):
+            try:
+                with urllib.request.urlopen(url, timeout=60) as resp:  # noqa: S310 - fixed URL
+                    expected = resp.headers.get("Content-Length")
+                    body = resp.read()
+                if expected is None or len(body) == int(expected):
+                    break
+                log.warning("short read (%d/%s bytes), retry %d", len(body), expected, attempt)
+            except (OSError, http.client.HTTPException) as e:
+                log.warning("download failed (%s), retry %d", e, attempt)
+        else:
+            raise SnapshotError(f"could not download {url}")
+        tmp.write_bytes(body)
+        tmp.rename(dest)
+
+
+def _source(path: Path, paths: Paths) -> str:
+    if path.parent == paths.metadata_dir:
+        return f"github.com/faithfulco/mlran@{MLRAN_COMMIT}"
+    return f"{ZENODO_RECORD} (MLRan_full_dataset.zip)"
+
+
+def build_manifest(paths: Paths) -> list[dict[str, str]]:
+    """Hash all raw files and write the manifest. Refuses to overwrite a different manifest."""
+    fetch_metadata(paths)
+    missing = [p for p in expected_raw_files(paths) if not p.exists()]
+    if missing:
+        raise SnapshotError(f"missing raw files: {[str(p) for p in missing]}")
+
+    now = datetime.now(UTC).isoformat(timespec="seconds")
+    rows = []
+    for p in expected_raw_files(paths):
+        log.info("hashing %s", p.name)
+        rows.append(
+            {
+                "path": str(p.relative_to(paths.root)) if p.is_relative_to(paths.root) else str(p),
+                "bytes": str(p.stat().st_size),
+                "sha256": sha256_file(p),
+                "source": _source(p, paths),
+                "retrieved_at": now,
+            }
+        )
+
+    if paths.raw_manifest.exists():
+        old = {r["path"]: r["sha256"] for r in _read(paths.raw_manifest)}
+        new = {r["path"]: r["sha256"] for r in rows}
+        if old != new:
+            raise SnapshotError(
+                "raw files differ from the committed manifest; the snapshot is immutable. "
+                "Delete reports/raw_manifest.csv only if the dataset version changed on purpose."
+            )
+        log.info("manifest unchanged; keeping original retrieved_at timestamps")
+        return _read(paths.raw_manifest)
+
+    paths.raw_manifest.parent.mkdir(parents=True, exist_ok=True)
+    with paths.raw_manifest.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=FIELDS)
+        w.writeheader()
+        w.writerows(rows)
+    write_stage(
+        paths.stage_report,
+        "snapshot",
+        {"files": len(rows), "total_bytes": sum(int(r["bytes"]) for r in rows)},
+    )
+    return rows
+
+
+def _read(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def verify(paths: Paths, full_hash: bool = False) -> None:
+    """Check every manifest entry exists with the recorded size (and hash when full_hash).
+
+    Size-only is the fast default for each stage; `python -m src.check_raw --verify --full` rehashes everything.
+    """
+    if not paths.raw_manifest.exists():
+        raise SnapshotError("no raw manifest; run `python -m src.check_raw` first")
+    problems = []
+    for r in _read(paths.raw_manifest):
+        p = Path(r["path"])
+        p = p if p.is_absolute() else paths.root / p
+        if not p.exists():
+            problems.append(f"missing: {p}")
+            continue
+        if p.stat().st_size != int(r["bytes"]):
+            problems.append(f"size changed: {p}")
+            continue
+        if full_hash and sha256_file(p) != r["sha256"]:
+            problems.append(f"hash changed: {p}")
+    if problems:
+        raise SnapshotError("raw snapshot verification failed:\n" + "\n".join(problems))
+    log.info("raw snapshot verified (%s)", "sha256" if full_hash else "size")
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Write or verify the raw snapshot manifest.")
+    ap.add_argument("--verify", action="store_true", help="only verify against the manifest")
+    ap.add_argument("--full", action="store_true", help="with --verify: rehash every file")
+    args = ap.parse_args(argv)
+    if args.verify:
+        return run_stage(lambda p: verify(p, full_hash=args.full))
+    return run_stage(build_manifest)
+
 
 if __name__ == "__main__":
-    sys.exit(main(["snapshot"]))
+    sys.exit(main())

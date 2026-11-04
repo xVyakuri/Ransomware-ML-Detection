@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from mlran_parser.config import TABLE_PREFIX, TABLES, Paths
+from src.common import TABLE_PREFIX, TABLES, Paths
 
 N_FAMILIES = 20
 PER_FAMILY = 5
@@ -122,12 +122,12 @@ def fixture_paths(tmp_path_factory) -> Paths:
 
 @pytest.fixture(scope="session")
 def built(fixture_paths: Paths) -> Paths:
-    from mlran_parser import aggregates, convert, snapshot, split
+    from src import check_raw, features, make_splits, parse_raw
 
-    snapshot.build_manifest(fixture_paths)
-    convert.run(fixture_paths)
-    aggregates.run(fixture_paths)
-    split.run(fixture_paths)
+    check_raw.build_manifest(fixture_paths)
+    parse_raw.run(fixture_paths)
+    features.run(fixture_paths)
+    make_splits.run(fixture_paths)
     return fixture_paths
 
 

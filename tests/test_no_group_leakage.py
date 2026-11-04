@@ -4,9 +4,9 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from mlran_parser import leakage
-from mlran_parser.config import Paths
-from mlran_parser.labels import read_labels
+from src import quality_checks
+from src.build_labels import read_labels
+from src.common import Paths
 
 from .conftest import REAL, real_data
 
@@ -16,9 +16,9 @@ def _checks(paths: Paths):
     labels = read_labels(paths)
     pairs = pd.read_parquet(paths.near_dup_pairs)
     return [
-        leakage.check_groups_disjoint(m),
-        leakage.check_sha256_disjoint(m, labels),
-        leakage.check_near_dups_disjoint(m, pairs),
+        quality_checks.check_groups_disjoint(m),
+        quality_checks.check_sha256_disjoint(m, labels),
+        quality_checks.check_near_dups_disjoint(m, pairs),
     ]
 
 
