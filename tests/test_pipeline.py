@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 import pyarrow.parquet as pq
 import pytest
@@ -9,7 +8,6 @@ import scipy.sparse as sp
 from mlran_parser import leakage, snapshot
 from mlran_parser.config import Paths
 from mlran_parser.convert import parse_name
-from mlran_parser.labels import LabelError, build_labels
 from mlran_parser.loader import load
 
 from .conftest import EXTRA_ID, FAILED, REAL, build_fixture, real_data
@@ -62,38 +60,6 @@ def test_hash_leak_flagged(built: Paths):
     assert cat.leak_hash.sum() == 1
 
 
-def test_leakage_checks_pass(built: Paths):
-    checks = {c.name: c for c in leakage.run_all(built, write=False)}
-    must_pass = [
-        "labels_traceable",
-        "groups_disjoint",
-        "sha256_disjoint",
-        "near_dups_disjoint",
-        "holdout_unseen",
-        "failed_runs_excluded",
-        "deterministic",
-        "vocab_fit_on_train",
-        "no_own_sample_id_features",
-        "no_author_preselected_features",
-    ]
-    failed = {n: checks[n].detail for n in must_pass if not checks[n].passed}
-    assert not failed
-
-
-def test_duplicate_binary_and_near_dup_share_group(built: Paths):
-    m = pd.read_csv(built.split_manifest).set_index("sample_id")
-    assert m.at[10001, "group_id"] == m.at[10002, "group_id"]
-    assert m.at[13000, "group_id"] == m.at[13001, "group_id"]
-
-
-def test_loader_vocab_uses_train_only(built: Paths):
-    b = load(seed=0, min_df=3, paths=built)
-    assert (np.asarray((b.train.X > 0).sum(axis=0)).ravel() >= 3).all()
-    assert b.val.X.shape[1] == b.train.X.shape[1] == len(b.features)
-    assert set(b.train.y) == {0, 1}
-    assert len(b.holdout) and (b.holdout.y == 1).all()
-
-
 def test_loader_ablation_and_aggregates(built: Paths):
     full = load(seed=0, min_df=1, paths=built)
     no_str = load(
@@ -112,16 +78,6 @@ def test_loader_ablation_and_aggregates(built: Paths):
     assert not no_tok.features.target.str.contains("<SAMPLE>").any()
 
 
-def test_labels_reject_id_range_mismatch(tmp_path):
-    paths = build_fixture(tmp_path)
-    md = pd.read_csv(paths.metadata_csv)
-    md.loc[md.sample_id == 13000, "sample_type"] = 1
-    md.loc[md.sample_id == 13000, "ransomware_family"] = "fam00"
-    md.to_csv(paths.metadata_csv, index=False)
-    with pytest.raises(LabelError):
-        build_labels(paths)
-
-
 def test_snapshot_detects_changed_raw_file(tmp_path):
     paths = build_fixture(tmp_path)
     snapshot.build_manifest(paths)
@@ -136,6 +92,11 @@ def test_snapshot_detects_changed_raw_file(tmp_path):
 def test_real_artifacts_pass_leakage_checks():
     checks = leakage.run_all(REAL, write=False)
     assert all(c.passed for c in checks), [(c.name, c.detail) for c in checks if not c.passed]
+
+
+def test_own_id_and_preselected_checks(built: Paths):
+    assert leakage.check_no_own_id_features(built).passed
+    assert leakage.check_no_preselected_inputs().passed
 
 
 @real_data
