@@ -12,14 +12,12 @@ Andrew Xie, Robert Wingert, Lucas Brown, Joshua Waltman, Gabriel Gradski, Update
 
 ## Quick start
 Requirements: Linux or macOS, and installed python3 (3.10+)
-'''
-git clone https://github.com/xVyakuri/Ransomware-ML-Detection/ && cd Ransomware-ML-Detection
+```git clone https://github.com/xVyakuri/Ransomware-ML-Detection/ && cd Ransomware-ML-Detection
 
 # 1. Download MLRan's public dataset yourself and put it in data/ (see data/README.md)
 # 2. Fill in the TODO fields in config/config.yaml for raw format and field names.
 make setup
-make reproduce
-'''
+make reproduce```
 
 ## Dataset
 We are using the public dataset MLRan, created by Onwuegbuche, Olaoluwa, Jurcut, and Pasquale). This dataset contains ransomware and goodware samples from 2006 to 2024 executed in a sandbox, containing: 
@@ -55,16 +53,16 @@ The pipeline for this anomaly detector follows this step framework:
 Each row per observed event is ordered within an execution. Early-detection analysis requires the raw data to preserve event order or time. The following is the normalized event table for this dataset:
 | Column | Description |
 | ------ | ----------- |
-| '''execution_id''' | Unique run (from '''sample_id''') |
-| '''event_order''' | Position within the execution |
-| '''event_time''' | Time within the execution, if available |
-| '''category''' | Behavior category (API call, file/directory operation, registry, etc.) |
-| '''operation''' | Operation or API name |
-| '''target''' | File, directory, key, or host the operation touched |
+| `execution_id` | Unique run (from `sample_id`) |
+| `event_order` | Position within the execution |
+| `event_time` | Time within the execution, if available |
+| `category` | Behavior category (API call, file/directory operation, registry, etc.) |
+| `operation` | Operation or API name |
+| `target` | File, directory, key, or host the operation touched |
 
 ### Labels
 Each row per observed event tracable to the raw data. Unlabeled events are never treated as benign, where they are dropped and logged, and class balance is measured before training following the labels.csv file:
-'''execution_id, label (benign | ransomware), family, type, first_seen_year, source'''
+`execution_id, label (benign | ransomware), family, type, first_seen_year, source`
 
 ### Leakage-safe split
 For our split, we are using a fixed seed with a grouped 70/15/15 training/validation/testing split. Scaling, imputation, and feature selection are fitted on training data only. Moreover, we are using separate groups, where all prefixes of a single execution always stay together, of:
@@ -75,10 +73,10 @@ For our split, we are using a fixed seed with a grouped 70/15/15 training/valida
 ### Features
 | Feature family | Examples |
 | -------------- | -------- |
-| '''op_counts_rates''' | Operation counts and rates |
-| '''unique_targets''' | Unique files and directories touched |
-| '''read_write_ratio''' | Read/write relationship |
-| '''api_ngrams''' | API call n-grams (order information) |
+| `op_counts_rates` | Operation counts and rates |
+| `unique_targets` | Unique files and directories touched |
+| `read_write_ratio` | Read/write relationship |
+| `api_ngrams` | API call n-grams (order information) |
 
 ### Models
 | Role | Method | Notes |
