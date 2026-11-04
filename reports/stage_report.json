@@ -5,7 +5,172 @@
     "total_bytes": 4134942122
   },
   "labels": {
-    "completed_at": "2026-11-04T17:53:22+00:00",
+    "completed_at": "2026-11-04T22:50:46+00:00",
+    "resolved_config": {
+      "paths": {
+        "raw": "data/raw/MLRan_full_dataset",
+        "data": "data",
+        "results": "results",
+        "reports": "reports"
+      },
+      "splits": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fractions": {
+          "train": 0.7,
+          "val": 0.15,
+          "test": 0.15
+        },
+        "near_duplicate_jaccard": 0.9
+      },
+      "holdout": {
+        "seed": 520,
+        "families": 8,
+        "minimum_types": 3
+      },
+      "parser": {
+        "column_batch": 5000,
+        "thrift_limit": 2147483647
+      },
+      "audit": {
+        "seed": 620,
+        "samples": 20
+      },
+      "features": {
+        "min_df": 5,
+        "sample_tokens": true,
+        "supervised_aggregates": true
+      },
+      "preprocessing": {
+        "imputation": "median",
+        "scale_aggregates": true
+      },
+      "experiments": {
+        "variability": true,
+        "ablation": true,
+        "sample_tokens": true,
+        "class_weight": true,
+        "ablation_model": "rf"
+      },
+      "report": {
+        "formats": [
+          "png",
+          "pdf"
+        ],
+        "reference_seed": 0
+      },
+      "baseline": {
+        "feature": "file_written_n"
+      },
+      "training": {
+        "seed": 0,
+        "models": [
+          "count",
+          "logreg",
+          "rf",
+          "kmeans"
+        ]
+      },
+      "threshold": {
+        "target_fpr": 0.01
+      },
+      "models": {
+        "logreg": {
+          "C": 1,
+          "class_weight": "balanced",
+          "solver": "liblinear",
+          "max_iter": 2000
+        },
+        "rf": {
+          "n_estimators": 300,
+          "min_samples_leaf": 2,
+          "class_weight": "balanced",
+          "max_features": "sqrt",
+          "n_jobs": 2
+        },
+        "kmeans": {
+          "n_clusters": 20,
+          "n_init": 10
+        }
+      },
+      "dataset": {
+        "tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "5_str",
+          "6_net",
+          "7_sys",
+          "8_drop",
+          "9_sig"
+        ],
+        "dynamic_tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "6_net",
+          "7_sys",
+          "8_drop"
+        ],
+        "table_prefix": {
+          "1_api": [
+            "API",
+            false
+          ],
+          "2_reg": [
+            "REG",
+            true
+          ],
+          "3_file": [
+            "FILE",
+            true
+          ],
+          "4_dir": [
+            "DIRECTORY",
+            true
+          ],
+          "5_str": [
+            "STRING",
+            false
+          ],
+          "6_net": [
+            "NETWORK",
+            true
+          ],
+          "7_sys": [
+            "SYSTEM",
+            true
+          ],
+          "8_drop": [
+            "DROP",
+            true
+          ],
+          "9_sig": [
+            "SIGNATURE",
+            false
+          ]
+        },
+        "known_extra_ids": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+        "metadata_files": {
+          "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+          "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+          "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+        }
+      }
+    },
     "metadata_rows_in": 4880,
     "labels_out": 4880,
     "ransomware": 2330,
@@ -50,7 +215,172 @@
     ]
   },
   "convert": {
-    "completed_at": "2026-11-04T17:56:43+00:00",
+    "completed_at": "2026-11-04T22:56:40+00:00",
+    "resolved_config": {
+      "paths": {
+        "raw": "data/raw/MLRan_full_dataset",
+        "data": "data",
+        "results": "results",
+        "reports": "reports"
+      },
+      "splits": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fractions": {
+          "train": 0.7,
+          "val": 0.15,
+          "test": 0.15
+        },
+        "near_duplicate_jaccard": 0.9
+      },
+      "holdout": {
+        "seed": 520,
+        "families": 8,
+        "minimum_types": 3
+      },
+      "parser": {
+        "column_batch": 5000,
+        "thrift_limit": 2147483647
+      },
+      "audit": {
+        "seed": 620,
+        "samples": 20
+      },
+      "features": {
+        "min_df": 5,
+        "sample_tokens": true,
+        "supervised_aggregates": true
+      },
+      "preprocessing": {
+        "imputation": "median",
+        "scale_aggregates": true
+      },
+      "experiments": {
+        "variability": true,
+        "ablation": true,
+        "sample_tokens": true,
+        "class_weight": true,
+        "ablation_model": "rf"
+      },
+      "report": {
+        "formats": [
+          "png",
+          "pdf"
+        ],
+        "reference_seed": 0
+      },
+      "baseline": {
+        "feature": "file_written_n"
+      },
+      "training": {
+        "seed": 0,
+        "models": [
+          "count",
+          "logreg",
+          "rf",
+          "kmeans"
+        ]
+      },
+      "threshold": {
+        "target_fpr": 0.01
+      },
+      "models": {
+        "logreg": {
+          "C": 1,
+          "class_weight": "balanced",
+          "solver": "liblinear",
+          "max_iter": 2000
+        },
+        "rf": {
+          "n_estimators": 300,
+          "min_samples_leaf": 2,
+          "class_weight": "balanced",
+          "max_features": "sqrt",
+          "n_jobs": 2
+        },
+        "kmeans": {
+          "n_clusters": 20,
+          "n_init": 10
+        }
+      },
+      "dataset": {
+        "tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "5_str",
+          "6_net",
+          "7_sys",
+          "8_drop",
+          "9_sig"
+        ],
+        "dynamic_tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "6_net",
+          "7_sys",
+          "8_drop"
+        ],
+        "table_prefix": {
+          "1_api": [
+            "API",
+            false
+          ],
+          "2_reg": [
+            "REG",
+            true
+          ],
+          "3_file": [
+            "FILE",
+            true
+          ],
+          "4_dir": [
+            "DIRECTORY",
+            true
+          ],
+          "5_str": [
+            "STRING",
+            false
+          ],
+          "6_net": [
+            "NETWORK",
+            true
+          ],
+          "7_sys": [
+            "SYSTEM",
+            true
+          ],
+          "8_drop": [
+            "DROP",
+            true
+          ],
+          "9_sig": [
+            "SIGNATURE",
+            false
+          ]
+        },
+        "known_extra_ids": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+        "metadata_files": {
+          "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+          "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+          "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+        }
+      }
+    },
     "samples": 4880,
     "features": 6484506,
     "nonzero_cells": 17047798,
@@ -98,7 +428,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 0,
         "id_token_features": 12806,
-        "seconds": 15.7
+        "seconds": 27.2
       },
       "3_file": {
         "rows_in": 4884,
@@ -119,7 +449,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 0,
         "id_token_features": 22893,
-        "seconds": 63.1
+        "seconds": 110.0
       },
       "4_dir": {
         "rows_in": 4884,
@@ -140,7 +470,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 0,
         "id_token_features": 6124,
-        "seconds": 4.4
+        "seconds": 7.9
       },
       "5_str": {
         "rows_in": 4884,
@@ -161,7 +491,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 11,
         "id_token_features": 1351,
-        "seconds": 109.9
+        "seconds": 193.7
       },
       "6_net": {
         "rows_in": 4884,
@@ -182,7 +512,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 0,
         "id_token_features": 0,
-        "seconds": 0.2
+        "seconds": 0.3
       },
       "7_sys": {
         "rows_in": 4884,
@@ -203,7 +533,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 0,
         "id_token_features": 2180,
-        "seconds": 0.5
+        "seconds": 0.9
       },
       "8_drop": {
         "rows_in": 4884,
@@ -224,7 +554,7 @@
         "dictionary_entries_unused": 0,
         "leak_hash_features": 0,
         "id_token_features": 63,
-        "seconds": 1.5
+        "seconds": 2.4
       },
       "9_sig": {
         "rows_in": 4884,
@@ -250,7 +580,172 @@
     }
   },
   "aggregates": {
-    "completed_at": "2026-11-04T17:56:45+00:00",
+    "completed_at": "2026-11-04T22:56:44+00:00",
+    "resolved_config": {
+      "paths": {
+        "raw": "data/raw/MLRan_full_dataset",
+        "data": "data",
+        "results": "results",
+        "reports": "reports"
+      },
+      "splits": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fractions": {
+          "train": 0.7,
+          "val": 0.15,
+          "test": 0.15
+        },
+        "near_duplicate_jaccard": 0.9
+      },
+      "holdout": {
+        "seed": 520,
+        "families": 8,
+        "minimum_types": 3
+      },
+      "parser": {
+        "column_batch": 5000,
+        "thrift_limit": 2147483647
+      },
+      "audit": {
+        "seed": 620,
+        "samples": 20
+      },
+      "features": {
+        "min_df": 5,
+        "sample_tokens": true,
+        "supervised_aggregates": true
+      },
+      "preprocessing": {
+        "imputation": "median",
+        "scale_aggregates": true
+      },
+      "experiments": {
+        "variability": true,
+        "ablation": true,
+        "sample_tokens": true,
+        "class_weight": true,
+        "ablation_model": "rf"
+      },
+      "report": {
+        "formats": [
+          "png",
+          "pdf"
+        ],
+        "reference_seed": 0
+      },
+      "baseline": {
+        "feature": "file_written_n"
+      },
+      "training": {
+        "seed": 0,
+        "models": [
+          "count",
+          "logreg",
+          "rf",
+          "kmeans"
+        ]
+      },
+      "threshold": {
+        "target_fpr": 0.01
+      },
+      "models": {
+        "logreg": {
+          "C": 1,
+          "class_weight": "balanced",
+          "solver": "liblinear",
+          "max_iter": 2000
+        },
+        "rf": {
+          "n_estimators": 300,
+          "min_samples_leaf": 2,
+          "class_weight": "balanced",
+          "max_features": "sqrt",
+          "n_jobs": 2
+        },
+        "kmeans": {
+          "n_clusters": 20,
+          "n_init": 10
+        }
+      },
+      "dataset": {
+        "tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "5_str",
+          "6_net",
+          "7_sys",
+          "8_drop",
+          "9_sig"
+        ],
+        "dynamic_tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "6_net",
+          "7_sys",
+          "8_drop"
+        ],
+        "table_prefix": {
+          "1_api": [
+            "API",
+            false
+          ],
+          "2_reg": [
+            "REG",
+            true
+          ],
+          "3_file": [
+            "FILE",
+            true
+          ],
+          "4_dir": [
+            "DIRECTORY",
+            true
+          ],
+          "5_str": [
+            "STRING",
+            false
+          ],
+          "6_net": [
+            "NETWORK",
+            true
+          ],
+          "7_sys": [
+            "SYSTEM",
+            true
+          ],
+          "8_drop": [
+            "DROP",
+            true
+          ],
+          "9_sig": [
+            "SIGNATURE",
+            false
+          ]
+        },
+        "known_extra_ids": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+        "metadata_files": {
+          "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+          "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+          "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+        }
+      }
+    },
     "rows": 4880,
     "columns": [
       "api_n",
@@ -298,7 +793,172 @@
     "null_cells": 0
   },
   "split": {
-    "completed_at": "2026-11-04T17:56:51+00:00",
+    "completed_at": "2026-11-04T22:56:53+00:00",
+    "resolved_config": {
+      "paths": {
+        "raw": "data/raw/MLRan_full_dataset",
+        "data": "data",
+        "results": "results",
+        "reports": "reports"
+      },
+      "splits": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fractions": {
+          "train": 0.7,
+          "val": 0.15,
+          "test": 0.15
+        },
+        "near_duplicate_jaccard": 0.9
+      },
+      "holdout": {
+        "seed": 520,
+        "families": 8,
+        "minimum_types": 3
+      },
+      "parser": {
+        "column_batch": 5000,
+        "thrift_limit": 2147483647
+      },
+      "audit": {
+        "seed": 620,
+        "samples": 20
+      },
+      "features": {
+        "min_df": 5,
+        "sample_tokens": true,
+        "supervised_aggregates": true
+      },
+      "preprocessing": {
+        "imputation": "median",
+        "scale_aggregates": true
+      },
+      "experiments": {
+        "variability": true,
+        "ablation": true,
+        "sample_tokens": true,
+        "class_weight": true,
+        "ablation_model": "rf"
+      },
+      "report": {
+        "formats": [
+          "png",
+          "pdf"
+        ],
+        "reference_seed": 0
+      },
+      "baseline": {
+        "feature": "file_written_n"
+      },
+      "training": {
+        "seed": 0,
+        "models": [
+          "count",
+          "logreg",
+          "rf",
+          "kmeans"
+        ]
+      },
+      "threshold": {
+        "target_fpr": 0.01
+      },
+      "models": {
+        "logreg": {
+          "C": 1,
+          "class_weight": "balanced",
+          "solver": "liblinear",
+          "max_iter": 2000
+        },
+        "rf": {
+          "n_estimators": 300,
+          "min_samples_leaf": 2,
+          "class_weight": "balanced",
+          "max_features": "sqrt",
+          "n_jobs": 2
+        },
+        "kmeans": {
+          "n_clusters": 20,
+          "n_init": 10
+        }
+      },
+      "dataset": {
+        "tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "5_str",
+          "6_net",
+          "7_sys",
+          "8_drop",
+          "9_sig"
+        ],
+        "dynamic_tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "6_net",
+          "7_sys",
+          "8_drop"
+        ],
+        "table_prefix": {
+          "1_api": [
+            "API",
+            false
+          ],
+          "2_reg": [
+            "REG",
+            true
+          ],
+          "3_file": [
+            "FILE",
+            true
+          ],
+          "4_dir": [
+            "DIRECTORY",
+            true
+          ],
+          "5_str": [
+            "STRING",
+            false
+          ],
+          "6_net": [
+            "NETWORK",
+            true
+          ],
+          "7_sys": [
+            "SYSTEM",
+            true
+          ],
+          "8_drop": [
+            "DROP",
+            true
+          ],
+          "9_sig": [
+            "SIGNATURE",
+            false
+          ]
+        },
+        "known_extra_ids": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+        "metadata_files": {
+          "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+          "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+          "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+        }
+      }
+    },
     "near_dup_threshold": 0.9,
     "near_dup_pairs": 3022,
     "near_dup_pairs_cross_label": 0,
@@ -517,7 +1177,172 @@
     }
   },
   "leakage": {
-    "completed_at": "2026-11-04T17:56:53+00:00",
+    "completed_at": "2026-11-04T22:56:57+00:00",
+    "resolved_config": {
+      "paths": {
+        "raw": "data/raw/MLRan_full_dataset",
+        "data": "data",
+        "results": "results",
+        "reports": "reports"
+      },
+      "splits": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fractions": {
+          "train": 0.7,
+          "val": 0.15,
+          "test": 0.15
+        },
+        "near_duplicate_jaccard": 0.9
+      },
+      "holdout": {
+        "seed": 520,
+        "families": 8,
+        "minimum_types": 3
+      },
+      "parser": {
+        "column_batch": 5000,
+        "thrift_limit": 2147483647
+      },
+      "audit": {
+        "seed": 620,
+        "samples": 20
+      },
+      "features": {
+        "min_df": 5,
+        "sample_tokens": true,
+        "supervised_aggregates": true
+      },
+      "preprocessing": {
+        "imputation": "median",
+        "scale_aggregates": true
+      },
+      "experiments": {
+        "variability": true,
+        "ablation": true,
+        "sample_tokens": true,
+        "class_weight": true,
+        "ablation_model": "rf"
+      },
+      "report": {
+        "formats": [
+          "png",
+          "pdf"
+        ],
+        "reference_seed": 0
+      },
+      "baseline": {
+        "feature": "file_written_n"
+      },
+      "training": {
+        "seed": 0,
+        "models": [
+          "count",
+          "logreg",
+          "rf",
+          "kmeans"
+        ]
+      },
+      "threshold": {
+        "target_fpr": 0.01
+      },
+      "models": {
+        "logreg": {
+          "C": 1,
+          "class_weight": "balanced",
+          "solver": "liblinear",
+          "max_iter": 2000
+        },
+        "rf": {
+          "n_estimators": 300,
+          "min_samples_leaf": 2,
+          "class_weight": "balanced",
+          "max_features": "sqrt",
+          "n_jobs": 2
+        },
+        "kmeans": {
+          "n_clusters": 20,
+          "n_init": 10
+        }
+      },
+      "dataset": {
+        "tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "5_str",
+          "6_net",
+          "7_sys",
+          "8_drop",
+          "9_sig"
+        ],
+        "dynamic_tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "6_net",
+          "7_sys",
+          "8_drop"
+        ],
+        "table_prefix": {
+          "1_api": [
+            "API",
+            false
+          ],
+          "2_reg": [
+            "REG",
+            true
+          ],
+          "3_file": [
+            "FILE",
+            true
+          ],
+          "4_dir": [
+            "DIRECTORY",
+            true
+          ],
+          "5_str": [
+            "STRING",
+            false
+          ],
+          "6_net": [
+            "NETWORK",
+            true
+          ],
+          "7_sys": [
+            "SYSTEM",
+            true
+          ],
+          "8_drop": [
+            "DROP",
+            true
+          ],
+          "9_sig": [
+            "SIGNATURE",
+            false
+          ]
+        },
+        "known_extra_ids": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+        "metadata_files": {
+          "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+          "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+          "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+        }
+      }
+    },
     "passed": true,
     "checks": {
       "labels_traceable": {
@@ -567,7 +1392,172 @@
     }
   },
   "audit": {
-    "completed_at": "2026-11-04T17:58:54+00:00",
+    "completed_at": "2026-11-04T23:00:22+00:00",
+    "resolved_config": {
+      "paths": {
+        "raw": "data/raw/MLRan_full_dataset",
+        "data": "data",
+        "results": "results",
+        "reports": "reports"
+      },
+      "splits": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fractions": {
+          "train": 0.7,
+          "val": 0.15,
+          "test": 0.15
+        },
+        "near_duplicate_jaccard": 0.9
+      },
+      "holdout": {
+        "seed": 520,
+        "families": 8,
+        "minimum_types": 3
+      },
+      "parser": {
+        "column_batch": 5000,
+        "thrift_limit": 2147483647
+      },
+      "audit": {
+        "seed": 620,
+        "samples": 20
+      },
+      "features": {
+        "min_df": 5,
+        "sample_tokens": true,
+        "supervised_aggregates": true
+      },
+      "preprocessing": {
+        "imputation": "median",
+        "scale_aggregates": true
+      },
+      "experiments": {
+        "variability": true,
+        "ablation": true,
+        "sample_tokens": true,
+        "class_weight": true,
+        "ablation_model": "rf"
+      },
+      "report": {
+        "formats": [
+          "png",
+          "pdf"
+        ],
+        "reference_seed": 0
+      },
+      "baseline": {
+        "feature": "file_written_n"
+      },
+      "training": {
+        "seed": 0,
+        "models": [
+          "count",
+          "logreg",
+          "rf",
+          "kmeans"
+        ]
+      },
+      "threshold": {
+        "target_fpr": 0.01
+      },
+      "models": {
+        "logreg": {
+          "C": 1,
+          "class_weight": "balanced",
+          "solver": "liblinear",
+          "max_iter": 2000
+        },
+        "rf": {
+          "n_estimators": 300,
+          "min_samples_leaf": 2,
+          "class_weight": "balanced",
+          "max_features": "sqrt",
+          "n_jobs": 2
+        },
+        "kmeans": {
+          "n_clusters": 20,
+          "n_init": 10
+        }
+      },
+      "dataset": {
+        "tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "5_str",
+          "6_net",
+          "7_sys",
+          "8_drop",
+          "9_sig"
+        ],
+        "dynamic_tables": [
+          "1_api",
+          "2_reg",
+          "3_file",
+          "4_dir",
+          "6_net",
+          "7_sys",
+          "8_drop"
+        ],
+        "table_prefix": {
+          "1_api": [
+            "API",
+            false
+          ],
+          "2_reg": [
+            "REG",
+            true
+          ],
+          "3_file": [
+            "FILE",
+            true
+          ],
+          "4_dir": [
+            "DIRECTORY",
+            true
+          ],
+          "5_str": [
+            "STRING",
+            false
+          ],
+          "6_net": [
+            "NETWORK",
+            true
+          ],
+          "7_sys": [
+            "SYSTEM",
+            true
+          ],
+          "8_drop": [
+            "DROP",
+            true
+          ],
+          "9_sig": [
+            "SIGNATURE",
+            false
+          ]
+        },
+        "known_extra_ids": [
+          11898,
+          11899,
+          12057,
+          12107
+        ],
+        "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+        "metadata_files": {
+          "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+          "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+          "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+        }
+      }
+    },
     "passed": true,
     "samples": 20,
     "feature_cells_checked": 40,

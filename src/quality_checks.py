@@ -159,7 +159,10 @@ def check_labels_traceable(m: pd.DataFrame, labels: pd.DataFrame) -> Check:
     )
 
 
-def check_vocab_train_only(paths: Paths, seed: int = 0, min_df: int = 5) -> Check:
+def check_vocab_train_only(paths: Paths, seed: int | None = None, min_df: int | None = None) -> Check:
+    from src.configuration import CONFIG
+    seed = CONFIG['training']['seed'] if seed is None else seed
+    min_df = CONFIG['features']['min_df'] if min_df is None else min_df
     from src.features import load
 
     b = load(seed=seed, min_df=min_df, paths=paths)

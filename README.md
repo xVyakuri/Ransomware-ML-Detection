@@ -1,209 +1,109 @@
-# Early Ransomware/Intrusion Detection on Windows with Machine Learning
+# Ransomware detection on Windows with machine learning
 
-## What are we addressing?
-Can a defender flag a Windows ransomware execution early enough to isolate the host before most files are lost, without flooding analysts with false alerts on backups, builds, and archive extraction?: Here, we will be addressing this with a creation of an anomaly detector utilizing machine learning models to detect and classify several Ransomware attack families against regular benign behavior.
+This project compares models for distinguishing ransomware from benign software
+using MLRan sandbox behavior features. It evaluates detection quality, false alarms,
+and generalization to ransomware families absent from training.
 
-## Why use Machine Learning over a rule?
-A single rule (e.g., "many file writes per second") usually backfires on regular day-to-day organizatoin behavior, such as backups, archive extraction, software builds, and legitimate encryption. Machine Learning can instead combine operation rates, breadth of files touched, read/write relationships, and operation order to properly distinguish between malicious and benign behavior.
+MLRan supplies binary feature presence, without event order or timestamps. This
+project cannot measure detection delay or whether an alert arrives before files are
+lost. Models predict ransomware versus benign, not the ransomware family.
 
-## Reference and Citation
-If referencing this project, cite this github repository with the following:
-Andrew Xie, Robert Wingert, Lucas Brown, Joshua Waltman, Gabriel Gradski, Update November 2026, "Early Ransomware/Intrusion Detection on Windows with Machine Learning", URL=https://github.com/xVyakuri/Ransomware-ML-Detection/
+## Setup and full run
 
-## Quick start
-Requirements: Linux or macOS, and installed python3 (3.10+)
+Requirements: Linux or macOS, Python 3.11+, and Make. Setup uses Python's built-in
+virtual environment support and pip; uv and conda are not required.
+Parsing can use about 15 GB RAM; use a machine with at least 16 GB.
+
+1. Download and extract MLRan as described in [data/README.md](data/README.md).
+2. Review [config/config.yaml](config/config.yaml).
+3. Run from the project root:
+
 ```bash
-git clone https://github.com/xVyakuri/Ransomware-ML-Detection/ && cd Ransomware-ML-Detection
-
-# 1. Download MLRan's public dataset yourself and put it in data/ (see data/README.md)
-# 2. Fill in the TODO fields in config/config.yaml for raw format and field names.
 make setup
+make data
 make reproduce
 ```
 
-## Dataset
-We are using the public dataset MLRan, created by Onwuegbuche, Olaoluwa, Jurcut, and Pasquale). This dataset contains ransomware and goodware samples from 2006 to 2024 executed in a sandbox, containing: 
-- 4,800+ samples
-- 64 ransomware families
-- 4 ransomware types (locker, crypto, RaaS, and modern)
-- 9 behavior categories (API calls, registry keys, file/directory operations, strings, network, processes, dropped files, and signatures)
-- About 6.4 million raw features.
-See data/README.md for setup and verification as the dataset will NOT be in this repository.
+`make data` verifies the raw snapshot, builds features and grouped splits, and runs
+quality and raw-data spot checks. `make reproduce` verifies prepared data, trains
+configured experiments, evaluates them, and generates reports. Raw files are read-only.
 
-## Github Structure
-### Pipeline
-The pipeline for this anomaly detector follows this step framework:
-| Step number | Stage |
-| ----------- | ----- |
-| 1 | Verify raw snapshot & record manifest |
-| 2 | Parse new records to normalized events table |
-| 3 | Build traceable labels |
-| 4 | Quality checks and cleaning |
-| 5 | Grouped 70/15/15 training/validation/testing split |
-| 6 | Hold out 8 whole families |
-| 7 | Prefix windows (10/25/50/100%) |
-| 8 | Feature extraction |
-| 9 | Train only on scaling/imputation/selection |
-| 10 | Spot check between 20 random raw records and derived features |
-| 11 | Train models
-| 12 | Pick FPR 1% thresholds on validation |
-| 13 | Evaluate |
-| 14 | Experiments |
-| 15 | Final figures and tables for reporting |
+## Configuration and commands
 
-### Normalized Event Table
-Each row per observed event is ordered within an execution. Early-detection analysis requires the raw data to preserve event order or time. The following is the normalized event table for this dataset:
-| Column | Description |
-| ------ | ----------- |
-| `execution_id` | Unique run (from `sample_id`) |
-| `event_order` | Position within the execution |
-| `event_time` | Time within the execution, if available |
-| `category` | Behavior category (API call, file/directory operation, registry, etc.) |
-| `operation` | Operation or API name |
-| `target` | File, directory, key, or host the operation touched |
+Change settings in [config/config.yaml](config/config.yaml). The
+[configuration guide](docs/CONFIGURATION.md) explains which stages to rerun after
+changing settings. `make setup` installs `requirements.txt` into `.venv`.
+Run `make help` to see targets and options.
 
-### Labels
-Each row per observed event tracable to the raw data. Unlabeled events are never treated as benign, where they are dropped and logged, and class balance is measured before training following the labels.csv file:
-`execution_id, label (benign | ransomware), family, type, first_seen_year, source`
+Use `CONFIG` to select a YAML file and `OUTPUT_DIR` to override its results location:
 
-### Leakage-safe split
-For our split, we are using a fixed seed with a grouped 70/15/15 training/validation/testing split. Scaling, imputation, and feature selection are fitted on training data only. Moreover, we are using separate groups, where all prefixes of a single execution always stay together, of:
-- Ransomware family
-- Goodware
-- Exact and near duplicates
-
-### Features
-| Feature family | Examples |
-| -------------- | -------- |
-| `op_counts_rates` | Operation counts and rates |
-| `unique_targets` | Unique files and directories touched |
-| `read_write_ratio` | Read/write relationship |
-| `api_ngrams` | API call n-grams (order information) |
-
-### Models
-| Role | Method | Notes |
-| ---- | ------ | ----- |
-| Operational baseline | Threshold on 1 behavior count/rate | Threshold tuned on validation |
-| Traditional ML baseline | Logistic Regression | Class-weighted |
-| Primary model | Random Forest | Handles mixed, noisy count features |
-| Anomaly comparisons | One-Class SVM and/or distance to nearest K-means centroid | Trained on benign training records only |
-Alert thresholds are selected on the validation set to hit a 1% false-positive rate, then applied unchanged to test.
-
-### Experiments & Stres tests
-| Test | What changes |
-| ---- | ------------ |
-| Generalization | Hold out 8 whole families (at least 3 of 4 types, seeded) from train and validation and evaluate all models on them	|
-| Data/feature | Remove one feature family at a time (same model and split)	|
-| Model/decision | Random Forest class-weighted vs. unweighted, and same FPR 1% threshold rule |
-| Timeliness | Prefix length 10/25/50/100%; recall vs. delay trade-off |
-| Variability | 5 seeds with whole groups resampled	|
-
-### Limitations
-- MLRan's Public Dataset covers 2006 to 2024 Windows samples ran in a sandbox. It does not represent current EDR telemetry, evasive samples, or production prevalence. Results show relative model behavior on this dataset, not real-world alert volumes.
-- Goodware in MLRan is a curated benign set, and it may not cover backup tools, builds, indexing, and archive extraction as thoroughly as the research question imples.
-
-## Github Repository
-```text
-ransomware-early-detection/
-├── Makefile
-├── README.md
-├── .gitignore                  # ignores data/*, results/*, .venv/, __pycache__
-├── config/
-│   └── config.yaml             # seed(s), split ratios, FPR target, prefix fractions,
-│                               # held-out family count, model hyperparameters
-├── data/                       # NOT tracked (only .gitkeep + README.md committed)
-│   ├── README.md               # where to put MLRan, expected layout, expected checksum
-│   ├── raw/                    # USER places MLRan here manually (treated as read-only)
-│   ├── interim/                # normalized event table, labels.csv
-│   └── processed/              # splits, prefix windows, feature matrices
-├── src/
-│   ├── __init__.py
-│   ├── common.py               # config loading, seeding, paths, logging helpers
-│   ├── check_raw.py            # verify raw snapshot exists, write/verify SHA-256 manifest
-│   ├── parse_raw.py            # raw records -> normalized event table (execution_id, event_order/time, category, operation, target)
-│   ├── build_labels.py         # labels.csv (benign/ransomware, family, type, year, source)
-│   ├── quality_checks.py       # malformed/dropped records, missing fields, duplicate rates, class balance; writes per-stage log
-│   ├── spot_check.py           # sample 20 random raw records, compare to derived features
-│   ├── make_splits.py          # grouped 70/15/15 split (family + duplicate groups, prefixes of one execution kept together)
-│   ├── make_holdout.py         # choose 8 held-out families (>=3 of 4 types, seeded)
-│   ├── build_prefixes.py       # prefix windows at 10/25/50/100%
-│   ├── features.py             # counts/rates, unique files/dirs, read/write ratio, API n-grams, defines feature families for ablation
-│   ├── preprocess.py           # scaling, imputation, feature selection (fit on train only)
-│   ├── models.py               # model factory: threshold baseline, LogReg, RF, One-Class SVM, K-means distance
-│   ├── train.py                # train all models on a given split/seed
-│   ├── thresholds.py           # validation-selected threshold at FPR 1%
-│   ├── evaluate.py             # metrics on val/test: recall, FPR, PR/ROC, etc.
-│   ├── exp_generalization.py   # held-out families test
-│   ├── exp_ablation.py         # remove one feature family at a time
-│   ├── exp_class_weight.py     # RF class-weighted vs. none
-│   ├── exp_timeliness.py       # prefix 10/25/50/100%, recall vs. delay
-│   ├── exp_variability.py      # 5 seeds, whole groups resampled
-│   └── make_report.py          # final figures and tables from results/
-├── tests/
-│   ├── test_no_group_leakage.py     # no family/duplicate group spans train/val/test
-│   ├── test_prefix_integrity.py     # all prefixes of one execution share a split
-│   ├── test_holdout_families.py     # 8 families absent from train/val; type coverage >= 3
-│   ├── test_fit_on_train_only.py    # scaler/imputer/selector never see val/test
-│   ├── test_labels.py               # every execution has a label, and unlabeled does not mean benign
-│   ├── test_split_ratios.py         # ~70/15/15 and fixed-seed determinism
-│   └── test_threshold_rule.py       # threshold chosen on validation only
-├── results/                    # NOT tracked, generated
-│   ├── logs/                   # per-stage logs (dropped/malformed/missing/duplicates)
-│   ├── metrics/                # CSV/JSON per model and experiment
-│   ├── figures/                # PNGs/PDFs for the write-up
-│   └── tables/                 # CSV/LaTeX/Markdown tables
-└── requirements.txt
+```bash
+make reproduce CONFIG=config/config.yaml OUTPUT_DIR=results-comparison
 ```
+
+| Command | Purpose |
+|---|---|
+| `make help` | List commands and configuration options |
+| `make setup` | Create `.venv` and install requirements using pip |
+| `make data` | Build processed data, splits, quality checks, and audit |
+| `make verify` | Verify raw-file SHA-256 hashes against the manifest |
+| `make train` | Train enabled models on the configured training seed |
+| `make experiments` | Run configured seeds and comparison experiments |
+| `make evaluate` | Evaluate completed runs compatible with the configuration |
+| `make report` | Generate the results README, tables, and charts |
+| `make test` | Run automated tests |
+| `make lint` | Byte-compile all source and test modules, including experiment scripts |
+| `make clean` | Remove generated results; preserve raw/processed data and unrecognized files |
+
+Individual data stages are available as `make snapshot`, `make parse`,
+`make features`, `make splits`, `make quality`, and `make spot-check`.
+
+## Models and evaluation
+
+The default comparison includes a file-write-feature count rule, Logistic Regression,
+Random Forest, and benign-only K-means distance. Supervised models use presence
+features and aggregates; K-means uses aggregates.
+
+The default split is grouped 70/15/15 training/validation/test. Ransomware families,
+shared binaries, and near-duplicates stay together. Eight additional families form
+a fixed holdout. Failed runs are excluded. Vocabulary filtering and preprocessing
+are fitted only on the appropriate training cohort. See [docs/PARSER.md](docs/PARSER.md)
+for the data contract and leakage checks.
+
+Thresholds target empirical FPR of at most 1% on benign validation samples, then stay
+fixed for evaluation. Test FPR can differ. Both ordinary test and fixed holdout contain
+unseen ransomware families; holdout FPR reuses the ordinary test benign samples.
+
+Experiments compare feature-table removals, removal of sample-token presence
+features, Random Forest class weighting, and variability across split seeds.
+
+## Reading results
+
+Start with **`results/README.md`** after generating reports. It explains findings,
+caught/missed sample counts, experiment meanings, metrics, and artifact locations.
+Models, predictions, metrics, tables, and figures are generated under `results/`
+and ignored by Git.
+
+Data provenance and quality evidence are in `reports/raw_manifest.csv`,
+`reports/stage_report.json`, and `reports/audit_trace.md`.
+
+## Limitations
+
+- Curated Windows sandbox samples do not represent production EDR telemetry.
+- Benign coverage may not adequately represent backups, builds, and archive extraction.
+- Collection artifacts and different sample eras may influence performance.
+- Precision depends on the evaluation cohort's ransomware prevalence.
+- Seed variation is not an independent confidence interval.
+- Presence features describe distinct behaviors, not event frequencies or rates.
+
+## Citation
+
+Andrew Xie, Robert Wingert, Lucas Brown, Joshua Waltman, Gabriel Gradski,
+November 2026, "Early Ransomware/Intrusion Detection on Windows with Machine Learning",
+https://github.com/xVyakuri/Ransomware-ML-Detection/
 
 ## References
 Mayur Rele, John Samuel, Dipti Patil, Udaya Krishnan, etc., Published 2025, Accessed October 2026, “Exploring Ransomware Detection Based on Artificial Intelligence and Machine Learning”, https://www.sciencedirect.com/science/article/pii/S1877050925000146
 Indra Chaudhary, Suyash Adhikari, Published August 2024, Accessed October 2026, “Ransomware Detection using Machine Learning Techniques”, https://www.researchgate.net/publication/382931458_Ransomware_Detection_Using_Machine_Learning_Techniques
 Onwuegbuche, Olaoluwa, Jurcut, Pasquale, Updated October 2026, Accessed October 2026, “A behavioural dataset for ransomware analysis and detection. Journal of Network and Computer Applications, 104475.”, https://github.com/faithfulco/mlran/tree/main
 Onwuegbuche, Olaoluwa, Jurcut, Pasquale, Updated October 2026, Accessed October 2026, “A behavioural dataset for ransomware analysis and detection. Journal of Network and Computer Applications, 104475.”, https://zenodo.org/records/23403681
-
-## Parser (implemented)
-Pipeline steps 1-6, 8 (aggregate features) and 10 are implemented in the outline modules in `src/`. Data contract, design decisions and known limitations are in [docs/PARSER.md](docs/PARSER.md).
-
-### Setup
-1. Install [uv](https://docs.astral.sh/uv/).
-2. Download `MLRan_full_dataset.zip` from [Zenodo record 23403681](https://zenodo.org/records/23403681) and unzip it to `data/raw/MLRan_full_dataset/`.
-3. Create the environment with `make setup` (runs `uv sync --extra dev`).
-
-### Build the data
-```bash
-make data
-```
-
-| Make target | Module | Output |
-|---|---|---|
-| `snapshot` | `src/check_raw.py` | Pinned metadata in `data/raw/metadata/`, SHA-256 manifest in `reports/raw_manifest.csv` |
-| `parse` | `src/parse_raw.py` (labels from `src/build_labels.py`) | `data/processed/X.npz`, `samples.parquet`, `feature_catalog.parquet`, `labels.csv` |
-| `features` | `src/features.py` | `data/processed/aggregates.parquet` |
-| `splits` | `src/make_splits.py` (holdout from `src/make_holdout.py`) | `data/processed/split_manifest.csv`, `near_dup_pairs.parquet` |
-| `quality` | `src/quality_checks.py` | Quality summary and 11 leakage checks; non-zero exit code on failure |
-| `spot-check` | `src/spot_check.py` | `reports/audit_trace.md` |
-
-Run one step with `make <target>` or `uv run python -m src.<module>` from the repository root. `make verify` re-hashes the raw files and `make holdout` reports the held-out families. Shared paths, seeds and constants are in `src/common.py`. Every step writes its counts to `reports/stage_report.json`.
-
-A full build takes about 6 minutes. `parse` peaks at about 15 GB RAM, because the Parquet footer of the 3.6M-column strings table alone takes about 12 GB. Run the build once on a machine with 16 GB or more and share `data/processed/` (160 MB). Loading a split peaks at about 1.8 GB.
-
-### Use the data
-```python
-from src.features import load
-
-b = load(seed=0, min_df=5)          # seeds 0-4 for the variability test
-b.train.X, b.train.y                # scipy CSR, y: 1 = ransomware, 0 = goodware
-b.val, b.test, b.holdout            # holdout = 8 unseen families (ransomware only)
-b.features                          # one row per column: name, table, operation, target
-
-load(seed=0, tables=[...])                            # feature-family ablation
-load(seed=0, aggregates=True)                         # append 41 count/breadth features
-load(seed=0, sparse_features=False, aggregates=True)  # aggregates only (threshold baseline)
-load(seed=0, sample_tokens=False)                     # drop <SAMPLE> features (artifact ablation)
-```
-For the anomaly detectors, train on benign rows only: `b.train.X[b.train.y == 0]`.
-
-### Test
-```bash
-make test
-```

@@ -1,17 +1,8 @@
-# Ensure features consist of counts/rates, unique files/dirs, read/write ratio, and API n-grams.
 """Per-sample count and breadth features derived from the feature catalog.
 
 MLRan stores presence only, so every count is "number of distinct features of this kind the
 sample showed" (e.g. distinct files written), never an event count or a rate. Nothing here is
 fitted on data, so the table is safe to compute once over all samples.
-
-Team-facing loader: model-ready matrices for one split seed.
-
-    from src.features import load
-    b = load(seed=0, min_df=5)            # all 9 tables
-    b.train.X, b.train.y                  # scipy CSR + labels (1 = ransomware)
-    b.val, b.test, b.holdout              # same features as train
-    b.features                            # DataFrame describing every column of X
 
 Leakage rules enforced here:
   * the min_df vocabulary is counted on the train split only
@@ -167,9 +158,9 @@ class Bundle:
 
 
 def load(
-    seed: int = 0,
+    seed: int | None = None,
     tables: list[str] | tuple[str, ...] | None = None,
-    min_df: int = 5,
+    min_df: int | None = None,
     sparse_features: bool = True,
     aggregates: bool = False,
     sample_tokens: bool = True,
@@ -184,6 +175,9 @@ def load(
     sample_tokens   keep features where the sample's own file name became <SAMPLE>; they still
                     carry the submitted file's extension (.dll, .tmp, ...), a collection artifact
     """
+    from src.configuration import CONFIG
+    seed = CONFIG['training']['seed'] if seed is None else seed
+    min_df = CONFIG['features']['min_df'] if min_df is None else min_df
     if seed not in SPLIT_SEEDS:
         raise ValueError(f"seed must be one of {SPLIT_SEEDS}")
     tables = tuple(tables or TABLES)

@@ -1,25 +1,11 @@
-# Python dependencies for the ransomware/intrusion detection pipeline.
-# Installed into .venv by 'make setup' (Use 'make setup' before 'make reproduce').
-#
-# Install works on current Python 3.10+ releases.
-# Author: xVyakuri
-# Creation Date: 11/04/2026
-
-# Data Numerics (Use parquet for the event table & feature matrices)
+# Install with make setup (Python 3.11+).
+# Runtime dependencies match pyproject.toml; tests are included for make test.
 numpy>=1.26
 pandas>=2.1
 scipy>=1.11
-pyarrow>=14.0
-pyyaml>=6.0
-
-# Modeling (Scikit-learn for Logistic Regression, Random Forest, One Class SVM, K-means, and preprocessing)
-scikit-learn>=1.4
-joblib>=1.3
-
-# Metric Reporting
-matplotlib>=3.8
-tabulate>=0.9
-
-# Testing
-pytest>=8.0
-tqdm>=4.66
+pyarrow>=15
+PyYAML>=6.0
+scikit-learn>=1.5
+joblib>=1.4
+matplotlib>=3.9
+pytest>=8

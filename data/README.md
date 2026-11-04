@@ -9,12 +9,19 @@ Check the dataset's license and terms of use before using or sharing derived fil
 ## 2. Place dataset into data/raw/
 Copy or extract the downloaded dataset into `data/raw/`, keeping its original file names and folder structure. Do not edit, rename, or re-save anything there. `data/raw/` is treated as an immutable snapshot, and the pipeline only ever reads from it.
 
+```text
 data/
-├── README.md        (this file, tracked)
-├── raw/             <- YOU put MLRan here (git-ignored)
-├── interim/         generated: parsed events, labels (labels.csv), cleaned events
-└── processed/       generated: splits, prefix windows, features, preprocessor
+├── README.md
+├── raw/
+│   ├── MLRan_full_dataset/   # extracted Parquet tables and feature dictionaries
+│   └── metadata/            # pinned label metadata downloaded by the pipeline
+└── processed/               # generated matrices, labels, aggregates, and splits
+```
 
-## 3. Tell the pipeline what the files look like
-Open `config/config.yaml` and fill in the fields.
+## 3. Verify and build
+Run `make setup`, `make snapshot`, `make verify`, then `make data`.
+The parser expects `data/raw/MLRan_full_dataset/` and downloads pinned label metadata
+into `data/raw/metadata/`. Settings are in `config/config.yaml`.
+Actual outputs are described in `docs/PARSER.md`. This release has presence features,
+not ordered events or prefix windows.
 
