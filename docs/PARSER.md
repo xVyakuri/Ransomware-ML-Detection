@@ -94,7 +94,7 @@ The split is grouped 70/15/15 and stratified by label, with seeds 0–4. Each gr
 
 `load()` counts `min_df` on the train rows only. Scaling, imputation and feature selection in the models must also be fitted on `b.train` only. The authors' pre-selected feature sets (`MI_selected…`, `RFE_selected…`, `MLRan_X_train/test`) are never read, because the authors selected them on their own split.
 
-## Leakage checks (`uv run mlran leakcheck`)
+## Leakage checks (`make quality`)
 
 `labels_traceable`, `groups_disjoint`, `sha256_disjoint`, `near_dups_disjoint`, `holdout_unseen`, `failed_runs_excluded`, `deterministic`, `split_fractions`, `vocab_fit_on_train`, `no_own_sample_id_features`, `no_author_preselected_features`. All pass on the current build.
 
@@ -102,10 +102,10 @@ The split is grouped 70/15/15 and stratified by label, with seeds 0–4. Each gr
 
 | Step | Time | Peak RAM |
 |---|---|---|
-| `mlran all` (one-time build) | about 6 min | about 15 GB (Parquet footer of `5_str_dataset.parquet`: about 12 GB) |
+| `make data` (one-time build) | about 6 min | about 15 GB (Parquet footer of `5_str_dataset.parquet`: about 12 GB) |
 | `load(seed, min_df=5, aggregates=True)` | under 1 s | about 1.8 GB |
 
-The processed artifacts take 160 MB. Teammates with 8 GB machines use the shared `data/processed/` and never run `convert`.
+The processed artifacts take 160 MB. Teammates with 8 GB machines use the shared `data/processed/` and never run `make parse`.
 
 ## Known limitations (for the report)
 

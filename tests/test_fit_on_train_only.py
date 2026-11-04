@@ -3,9 +3,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from mlran_parser import leakage
-from mlran_parser.config import Paths
-from mlran_parser.loader import load
+from src import quality_checks
+from src.common import Paths
+from src.features import load
 
 from .conftest import REAL, real_data
 
@@ -19,11 +19,11 @@ def test_vocabulary_counted_on_train_only(built: Paths):
 
 
 def test_vocab_check_passes(built: Paths):
-    c = leakage.check_vocab_train_only(built, min_df=3)
+    c = quality_checks.check_vocab_train_only(built, min_df=3)
     assert c.passed, c.detail
 
 
 @real_data
 def test_real_vocab_check_passes():
-    c = leakage.check_vocab_train_only(REAL)
+    c = quality_checks.check_vocab_train_only(REAL)
     assert c.passed, c.detail

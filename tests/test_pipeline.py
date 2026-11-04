@@ -5,10 +5,10 @@ import pyarrow.parquet as pq
 import pytest
 import scipy.sparse as sp
 
-from mlran_parser import leakage, snapshot
-from mlran_parser.config import Paths
-from mlran_parser.convert import parse_name
-from mlran_parser.loader import load
+from src import check_raw, quality_checks
+from src.common import Paths
+from src.features import load
+from src.parse_raw import parse_name
 
 from .conftest import EXTRA_ID, FAILED, REAL, build_fixture, real_data
 
@@ -80,23 +80,23 @@ def test_loader_ablation_and_aggregates(built: Paths):
 
 def test_snapshot_detects_changed_raw_file(tmp_path):
     paths = build_fixture(tmp_path)
-    snapshot.build_manifest(paths)
-    snapshot.verify(paths, full_hash=True)
+    check_raw.build_manifest(paths)
+    check_raw.verify(paths, full_hash=True)
     target = paths.raw_dataset / "9_sig_feature_names_dic.json"
     target.write_text(target.read_text() + " ")
-    with pytest.raises(snapshot.SnapshotError):
-        snapshot.verify(paths)
+    with pytest.raises(check_raw.SnapshotError):
+        check_raw.verify(paths)
 
 
 @real_data
 def test_real_artifacts_pass_leakage_checks():
-    checks = leakage.run_all(REAL, write=False)
+    checks = quality_checks.run_all(REAL, write=False)
     assert all(c.passed for c in checks), [(c.name, c.detail) for c in checks if not c.passed]
 
 
 def test_own_id_and_preselected_checks(built: Paths):
-    assert leakage.check_no_own_id_features(built).passed
-    assert leakage.check_no_preselected_inputs().passed
+    assert quality_checks.check_no_own_id_features(built).passed
+    assert quality_checks.check_no_preselected_inputs().passed
 
 
 @real_data
