@@ -103,6 +103,7 @@ Alert thresholds are selected on the validation set to hit a 1% false-positive r
 - Goodware in MLRan is a curated benign set, and it may not cover backup tools, builds, indexing, and archive extraction as thoroughly as the research question imples.
 
 ## Github Repository
+```text
 ransomware-early-detection/
 ├── Makefile
 ├── README.md
@@ -152,6 +153,7 @@ ransomware-early-detection/
 │   ├── figures/                # PNGs/PDFs for the write-up
 │   └── tables/                 # CSV/LaTeX/Markdown tables
 └── requirements.txt
+```
 
 ## References
 Mayur Rele, John Samuel, Dipti Patil, Udaya Krishnan, etc., Published 2025, Accessed October 2026, “Exploring Ransomware Detection Based on Artificial Intelligence and Machine Learning”, https://www.sciencedirect.com/science/article/pii/S1877050925000146
