@@ -12,12 +12,14 @@ Andrew Xie, Robert Wingert, Lucas Brown, Joshua Waltman, Gabriel Gradski, Update
 
 ## Quick start
 Requirements: Linux or macOS, and installed python3 (3.10+)
-```git clone https://github.com/xVyakuri/Ransomware-ML-Detection/ && cd Ransomware-ML-Detection
+```bash
+git clone https://github.com/xVyakuri/Ransomware-ML-Detection/ && cd Ransomware-ML-Detection
 
 # 1. Download MLRan's public dataset yourself and put it in data/ (see data/README.md)
 # 2. Fill in the TODO fields in config/config.yaml for raw format and field names.
 make setup
-make reproduce```
+make reproduce
+```
 
 ## Dataset
 We are using the public dataset MLRan, created by Onwuegbuche, Olaoluwa, Jurcut, and Pasquale). This dataset contains ransomware and goodware samples from 2006 to 2024 executed in a sandbox, containing: 

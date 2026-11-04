@@ -1,5 +1,10 @@
 # Ignore data & results directory contents, python virtual environments, and python cache directories
-data/*
-results/*
+data/raw/*
+data/interim/*
+data/processed/*
+results/figures/*
+results/logs/*
+results/metrics/*
+results/tables/*
 .venv/
 __pycache__/
