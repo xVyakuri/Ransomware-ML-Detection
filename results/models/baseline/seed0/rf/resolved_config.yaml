@@ -1,0 +1,128 @@
+paths:
+  raw: data/raw/MLRan_full_dataset
+  data: data
+  results: results
+  reports: reports
+splits:
+  seeds:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  fractions:
+    train: 0.7
+    val: 0.15
+    test: 0.15
+  near_duplicate_jaccard: 0.9
+holdout:
+  seed: 520
+  families: 8
+  minimum_types: 3
+parser:
+  column_batch: 5000
+  thrift_limit: 2147483647
+audit:
+  seed: 620
+  samples: 20
+features:
+  min_df: 5
+  sample_tokens: true
+  supervised_aggregates: true
+preprocessing:
+  imputation: median
+  scale_aggregates: true
+experiments:
+  variability: true
+  ablation: true
+  sample_tokens: true
+  class_weight: true
+  ablation_model: rf
+report:
+  formats:
+  - png
+  - pdf
+  reference_seed: 0
+baseline:
+  feature: file_written_n
+training:
+  seed: 0
+  models:
+  - count
+  - logreg
+  - rf
+  - kmeans
+threshold:
+  target_fpr: 0.01
+models:
+  logreg:
+    C: 1
+    class_weight: balanced
+    solver: liblinear
+    max_iter: 2000
+  rf:
+    n_estimators: 300
+    min_samples_leaf: 2
+    class_weight: balanced
+    max_features: sqrt
+    n_jobs: 2
+  kmeans:
+    n_clusters: 20
+    n_init: 10
+dataset:
+  tables:
+  - 1_api
+  - 2_reg
+  - 3_file
+  - 4_dir
+  - 5_str
+  - 6_net
+  - 7_sys
+  - 8_drop
+  - 9_sig
+  dynamic_tables:
+  - 1_api
+  - 2_reg
+  - 3_file
+  - 4_dir
+  - 6_net
+  - 7_sys
+  - 8_drop
+  table_prefix:
+    1_api:
+    - API
+    - false
+    2_reg:
+    - REG
+    - true
+    3_file:
+    - FILE
+    - true
+    4_dir:
+    - DIRECTORY
+    - true
+    5_str:
+    - STRING
+    - false
+    6_net:
+    - NETWORK
+    - true
+    7_sys:
+    - SYSTEM
+    - true
+    8_drop:
+    - DROP
+    - true
+    9_sig:
+    - SIGNATURE
+    - false
+  known_extra_ids:
+  - 11898
+  - 11899
+  - 12057
+  - 12107
+  mlran_commit: 273fcac5af82ad60d60fa2bff427ebcb1db61273
+  metadata_files:
+    mlran_dataset_metadata.csv: 2_collected_samples_metadata/mlran_dataset_metadata.csv
+    ransomware_samples_families_description.csv: 2_collected_samples_metadata/ransomware_samples_families_description.csv
+    goodware_samples_description.csv: 2_collected_samples_metadata/goodware_samples_description.csv

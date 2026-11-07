@@ -1,0 +1,213 @@
+{
+  "resolved_config": {
+    "paths": {
+      "raw": "data/raw/MLRan_full_dataset",
+      "data": "data",
+      "results": "results",
+      "reports": "reports"
+    },
+    "splits": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "fractions": {
+        "train": 0.7,
+        "val": 0.15,
+        "test": 0.15
+      },
+      "near_duplicate_jaccard": 0.9
+    },
+    "holdout": {
+      "seed": 520,
+      "families": 8,
+      "minimum_types": 3
+    },
+    "parser": {
+      "column_batch": 5000,
+      "thrift_limit": 2147483647
+    },
+    "audit": {
+      "seed": 620,
+      "samples": 20
+    },
+    "features": {
+      "min_df": 5,
+      "sample_tokens": true,
+      "supervised_aggregates": true
+    },
+    "preprocessing": {
+      "imputation": "median",
+      "scale_aggregates": true
+    },
+    "experiments": {
+      "variability": true,
+      "ablation": true,
+      "sample_tokens": true,
+      "class_weight": true,
+      "ablation_model": "rf"
+    },
+    "report": {
+      "formats": [
+        "png",
+        "pdf"
+      ],
+      "reference_seed": 0
+    },
+    "baseline": {
+      "feature": "file_written_n"
+    },
+    "training": {
+      "seed": 0,
+      "models": [
+        "count",
+        "logreg",
+        "rf",
+        "kmeans"
+      ]
+    },
+    "threshold": {
+      "target_fpr": 0.01
+    },
+    "models": {
+      "logreg": {
+        "C": 1,
+        "class_weight": "balanced",
+        "solver": "liblinear",
+        "max_iter": 2000
+      },
+      "rf": {
+        "n_estimators": 300,
+        "min_samples_leaf": 2,
+        "class_weight": "balanced",
+        "max_features": "sqrt",
+        "n_jobs": 2
+      },
+      "kmeans": {
+        "n_clusters": 20,
+        "n_init": 10
+      }
+    },
+    "dataset": {
+      "tables": [
+        "1_api",
+        "2_reg",
+        "3_file",
+        "4_dir",
+        "5_str",
+        "6_net",
+        "7_sys",
+        "8_drop",
+        "9_sig"
+      ],
+      "dynamic_tables": [
+        "1_api",
+        "2_reg",
+        "3_file",
+        "4_dir",
+        "6_net",
+        "7_sys",
+        "8_drop"
+      ],
+      "table_prefix": {
+        "1_api": [
+          "API",
+          false
+        ],
+        "2_reg": [
+          "REG",
+          true
+        ],
+        "3_file": [
+          "FILE",
+          true
+        ],
+        "4_dir": [
+          "DIRECTORY",
+          true
+        ],
+        "5_str": [
+          "STRING",
+          false
+        ],
+        "6_net": [
+          "NETWORK",
+          true
+        ],
+        "7_sys": [
+          "SYSTEM",
+          true
+        ],
+        "8_drop": [
+          "DROP",
+          true
+        ],
+        "9_sig": [
+          "SIGNATURE",
+          false
+        ]
+      },
+      "known_extra_ids": [
+        11898,
+        11899,
+        12057,
+        12107
+      ],
+      "mlran_commit": "273fcac5af82ad60d60fa2bff427ebcb1db61273",
+      "metadata_files": {
+        "mlran_dataset_metadata.csv": "2_collected_samples_metadata/mlran_dataset_metadata.csv",
+        "ransomware_samples_families_description.csv": "2_collected_samples_metadata/ransomware_samples_families_description.csv",
+        "goodware_samples_description.csv": "2_collected_samples_metadata/goodware_samples_description.csv"
+      }
+    }
+  },
+  "config_hash": "6c01a56a66e8dc9c8ea1244bf3f200919e9c3658e6f0d2330155eb6b9e74cf34",
+  "inputs": {
+    "D:\\CLAML\\Ransomware-ML-Detection\\data\\processed\\X.npz": "aa32028610a80955de070444a23ad69056f148de7a879af615e696e5d4d6c2da",
+    "D:\\CLAML\\Ransomware-ML-Detection\\data\\processed\\feature_catalog.parquet": "9ed049e06c443d771b4f7af815e49ee843ae9bbcf53ff0be291d0828f70ddf38",
+    "D:\\CLAML\\Ransomware-ML-Detection\\data\\processed\\samples.parquet": "615982cc150add3ba3ebbdb609feed687e18f97fe3a54b9ab7b531a8adcbd8d4",
+    "D:\\CLAML\\Ransomware-ML-Detection\\data\\processed\\labels.csv": "3565f515bd0784b59d01ae6599441a466df938462311c43eb5b6598c600bf5e6",
+    "D:\\CLAML\\Ransomware-ML-Detection\\data\\processed\\aggregates.parquet": "f31770b409730bdc52d5b2cecb9e1a449c7062da9789c3923a5b31467c797fa4",
+    "D:\\CLAML\\Ransomware-ML-Detection\\data\\processed\\split_manifest.csv": "eeb591bb5f413f71a135c542e06b87383815f796435347a25d36971daac90c7b"
+  },
+  "revision": "9ee5fbebb941a29a82c5bc36fd3d690ceea25af0",
+  "dirty": " M reports/stage_report.json\n M src/train.py\n?? parse_log.txt\n",
+  "source": {
+    "src\\build_labels.py": "e9bea452d71de3ae8e3912736b79d0cb67d0a0ad0f129b3bccee3b8eacf2a3c7",
+    "src\\build_prefixes.py": "2a30376d9b3341df871c81629fab7cd38612fe5a934c6642bce356fbc43ce614",
+    "src\\check_raw.py": "b5c943b672c9c1463636dd5854d1fbdf182e34300039c1df42fd5dec7369da1f",
+    "src\\clean_results.py": "7f9b75608f6cd2484b69744f0adaa32310836de9404b0aa1aa10254baccebba3",
+    "src\\common.py": "58c507304140a2beacf055ee0807db06e196f490c54364b8ef5997daecb3aa3f",
+    "src\\configuration.py": "7c734fbbd83d4253ce05c7d8318054bb33b1db91f1c744189306abcfea4a3a72",
+    "src\\evaluate.py": "48abce866b8bcc205d4bd69c50edf33235ee8361ef617435e89d77c7fc34d144",
+    "src\\features.py": "07bb4d348feb4d8ad8c4577edbf8eee4f9c4a21185596a33a547b093508ab5e2",
+    "src\\make_holdout.py": "bf352560bed9519356c131e43ca632d5a8c402045e45aa9d649e904141ad015c",
+    "src\\make_report.py": "61d0a56357cacec80f18435d34ac31abb10f7f529f3b42b0cdbc0f7cf63b8813",
+    "src\\make_splits.py": "6d7e967d1b5105ea504d26e7faffa0a2dfcf2d075b15dd5089546a4810d13f6f",
+    "src\\models.py": "0ac941e75a5c1bb776ab32404f986cc8bcb2041473ae9204c6c4f7931687415c",
+    "src\\parse_raw.py": "b7b916d06336943e9415c71e4acd3282c6f23d530cf3354aa4df8496349b25a0",
+    "src\\preprocess.py": "b2aebd9ec52e55b556108ebfcde3a155e98dbd8579af7fe2b5c0ad6a5db9df91",
+    "src\\quality_checks.py": "f7fb886d5c36ed96bc1430b143c2127fffcc8f09ae6c80ff20bb944199e0bb16",
+    "src\\reproduce.py": "7071daeb5561e4ed54776b761f44b864f79398077bfb66b1dcbb062361393c3c",
+    "src\\results_guide.py": "5dccf8d16902642520f5178674f3dc4d65dce945238e7d28e59dc159a419ffd3",
+    "src\\spot_check.py": "5f8bbeed54b8575c5443c1e06f51c20812da18b0c01f40d33e27195aa3eb7587",
+    "src\\thresholds.py": "999dc7701d3ee41ac49d456e7d66e637ad7aa060281446dc45a1edffaaed75de",
+    "src\\train.py": "a3aaeaf80160ff715a34505e0c750c440a35baeda5c945bc01e474a0917a29b1",
+    "src\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\exp\\exp_ablation.py": "fd9f47ebe181a1b23ba6c93b0b2e2c44c1a440c3386e3ed531c77bf7f83b2060",
+    "src\\exp\\exp_class_weight.py": "d7d7e14faa15f980c1f82503ed2aa9ffaf7d68672d72f99b86dc8665a1492660",
+    "src\\exp\\exp_generalization.py": "c2f067915824c98821e42e478f2be28f4694130d3a2cff0f7c1f6d2b65847129",
+    "src\\exp\\exp_timeliness.py": "147e6aa3a4fc1d556ea85ba169bd2880fa23e7572cf59af4938d08342d2860ce",
+    "src\\exp\\exp_variability.py": "a17054fe2113b04a7251e394bf7dcfc8c1a80c145f883001dbaed4134dc3f297",
+    "src\\exp\\run_all.py": "f3474bd2f9ac3bede5cf207a66d4abb9ccdd2c9c7ef5f9085ed84d88138c5b66"
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.1",
+    "scikit-learn": "1.9.1"
+  }
+}

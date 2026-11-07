@@ -1,0 +1,12 @@
+{
+  "seed": 0,
+  "model": "count",
+  "tables": null,
+  "sample_tokens": true,
+  "balanced": true,
+  "threshold": 1656.0,
+  "benign_validation_count": 355,
+  "validation_fp": 3,
+  "validation_fpr": 0.008450704225352112,
+  "fpr_resolution": 0.0028169014084507044
+}
